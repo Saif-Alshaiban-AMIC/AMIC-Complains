@@ -2,15 +2,17 @@
  * Department email configuration
  * Maps department IDs to recipient email addresses
  */
+
 export const departmentEmails = {
   hr: 'hr@company.com',
   finance: 'finance@company.com',
   it: 'it@company.com',
-  operations: 'operations@company.com',
-  legal: 'legal@company.com',
   compliance: 'compliance@company.com',
-  management: 'management@company.com'
+  other: 'other@company.com',
+  project: 'projectmanagement@company.com'
 };
+
+
 
 /**
  * Department names in English and Arabic
@@ -18,23 +20,22 @@ export const departmentEmails = {
 export const departments = {
   en: [
     { id: 'hr', name: 'Human Resources' },
-    { id: 'finance', name: 'Finance & Accounting' },
+    { id: 'finance', name: 'Finance' },
     { id: 'it', name: 'Information Technology' },
-    { id: 'operations', name: 'Operations' },
-    { id: 'legal', name: 'Legal' },
-    { id: 'compliance', name: 'Compliance & Ethics' },
-    { id: 'management', name: 'Senior Management' }
+    { id: 'compliance', name: 'Contracts & Compliance' },
+    { id: 'project', name: 'Project Management' },
+    { id: 'other', name: 'Other' },
   ],
   ar: [
     { id: 'hr', name: 'الموارد البشرية' },
-    { id: 'finance', name: 'المالية والمحاسبة' },
+    { id: 'finance', name: 'المالية' },
     { id: 'it', name: 'تقنية المعلومات' },
-    { id: 'operations', name: 'العمليات' },
-    { id: 'legal', name: 'الشؤون القانونية' },
-    { id: 'compliance', name: 'الامتثال والأخلاقيات' },
-    { id: 'management', name: 'الإدارة العليا' }
+    { id: 'compliance', name: 'العقود والامتثال' },
+    { id: 'project', name: 'إدارة المشاريع' },
+    { id: 'other', name: 'أخرى' },
   ]
 };
+
 
 /**
  * Generate email subject based on department and language
@@ -42,8 +43,8 @@ export const departments = {
 export const getEmailSubject = (departmentId, language = 'en') => {
   const dept = departments[language].find(d => d.id === departmentId);
   const deptName = dept ? dept.name : 'General';
-  
-  return language === 'en' 
+
+  return language === 'en'
     ? `[CONFIDENTIAL] Whistleblower Report - ${deptName}`
     : `[سري] بلاغ المبلغين عن المخالفات - ${deptName}`;
 };
@@ -56,7 +57,7 @@ export const getEmailSubject = (departmentId, language = 'en') => {
  */
 export const generateEmailBody = (formData, language = 'en') => {
   const { name, email, organization, message, department } = formData;
-  
+
   if (language === 'ar') {
     return `
 تقرير بلاغ سري جديد
@@ -93,7 +94,7 @@ ${message}
 هذا البلاغ تم إرساله عبر منصة SecureReport
     `.trim();
   }
-  
+
   // English template
   return `
 New Confidential Whistleblower Report
@@ -131,78 +132,4 @@ This report was submitted through SecureReport Platform
   `.trim();
 };
 
-/**
- * Power Automate Flow Configuration
- * Replace this URL with your actual Power Automate Flow webhook URL
- */
-export const POWER_AUTOMATE_WEBHOOK_URL = 'YOUR_POWER_AUTOMATE_WEBHOOK_URL_HERE';
 
-/**
- * Prepare data for Power Automate
- * @param {Object} formData - Form data
- * @param {Array} attachments - File attachments
- * @param {string} language - Current language
- * @returns {Object} - Formatted data for Power Automate
- */
-export const preparePowerAutomateData = async (formData, attachments, language) => {
-  const recipientEmail = departmentEmails[formData.department];
-  const subject = getEmailSubject(formData.department, language);
-  const body = generateEmailBody(formData, language);
-  
-  // Convert attachments to base64 for Power Automate
-  const attachmentData = await Promise.all(
-    attachments.map(async (att) => {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          resolve({
-            name: att.name,
-            contentBytes: e.target.result.split(',')[1], // Get base64 part only
-            contentType: att.type
-          });
-        };
-        reader.readAsDataURL(att.file);
-      });
-    })
-  );
-  
-  return {
-    recipientEmail,
-    subject,
-    body,
-    attachments: attachmentData,
-    metadata: {
-      department: formData.department,
-      language,
-      submittedAt: new Date().toISOString(),
-      hasAttachments: attachments.length > 0,
-      attachmentCount: attachments.length
-    }
-  };
-};
-
-/**
- * Send report via Power Automate
- * @param {Object} data - Prepared data for Power Automate
- * @returns {Promise} - Fetch promise
- */
-export const sendViaPowerAutomate = async (data) => {
-  try {
-    const response = await fetch(POWER_AUTOMATE_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    return await response.json();
-  } catch (error) {
-    console.error('Error sending via Power Automate:', error);
-    throw error;
-  }
-};

@@ -29,7 +29,7 @@ export default function WhistleblowerLanding() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    organization: '',
+    site: '',
     department: '', // Added department field
     message: ''
   });
@@ -161,7 +161,7 @@ export default function WhistleblowerLanding() {
       setFormData({
         name: '',
         email: '',
-        organization: '',
+        site: '',
         department: '',
         message: ''
       });
@@ -186,7 +186,7 @@ export default function WhistleblowerLanding() {
           <div className="flex justify-between items-center h-16">
             <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
               <Shield className="w-8 h-8 text-blue-400" />
-              <span className="text-xl font-bold text-white">AMIC Complains</span>
+              <span className="text-xl font-bold text-white">Speak Safe AMIC</span>
             </div>
 
             {/* Desktop Navigation */}
@@ -291,11 +291,7 @@ export default function WhistleblowerLanding() {
 
           {/* Features */}
           <div className="grid md:grid-cols-3 gap-8 mt-20">
-            <div className="bg-slate-800/50 backdrop-blur p-8 rounded-xl border border-blue-500/20 hover:border-blue-500/40 transition-all">
-              <Lock className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-3">{t.features.encryption.title}</h3>
-              <p className="text-gray-400">{t.features.encryption.desc}</p>
-            </div>
+
             <div className="bg-slate-800/50 backdrop-blur p-8 rounded-xl border border-blue-500/20 hover:border-blue-500/40 transition-all">
               <Shield className="w-12 h-12 text-blue-400 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-3">{t.features.anonymity.title}</h3>
@@ -319,7 +315,29 @@ export default function WhistleblowerLanding() {
           </div>
 
           <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur p-8 rounded-xl border border-blue-500/20">
+            <div className="mb-6">
+              <label className="block text-gray-300 mb-2 font-medium">{t.form.name}</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder={t.form.namePlaceholder}
+                className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
+              />
+            </div>
 
+              <div className="mb-6">
+              <label className="block text-gray-300 mb-2 font-medium">{t.form.email}</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder={t.form.emailPlaceholder}
+                className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
+              />
+            </div>
             {/* Department Dropdown - ADDED */}
             <div className="mb-6">
               <label className="block text-gray-300 mb-2 font-medium">
@@ -343,38 +361,18 @@ export default function WhistleblowerLanding() {
               </select>
             </div>
 
-            <div className="mb-6">
-              <label className="block text-gray-300 mb-2 font-medium">{t.form.name}</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder={t.form.namePlaceholder}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
+
+
+          
 
             <div className="mb-6">
-              <label className="block text-gray-300 mb-2 font-medium">{t.form.email}</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder={t.form.emailPlaceholder}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-gray-300 mb-2 font-medium">{t.form.org}</label>
+              <label className="block text-gray-300 mb-2 font-medium">{t.form.site}</label>
               <input
                 type="text"
-                name="organization"
-                value={formData.organization}
+                name="site"
+                value={formData.site}
                 onChange={handleInputChange}
-                placeholder={t.form.orgPlaceholder}
+                placeholder={t.form.sitePlaceholder}
                 className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
