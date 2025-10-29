@@ -4,10 +4,10 @@ import en from './locale/en.json';
 import ar from './locale/ar.json';
 // Import utility functions
 import { stripMetadata, formatFileSize, validateFileSize, validateFileType } from './utils/metadataUtils';
-import { 
-  departments, 
-  preparePowerAutomateData, 
-  sendViaPowerAutomate 
+import {
+  departments,
+  preparePowerAutomateData,
+  sendViaPowerAutomate
 } from './utils/emailTemplate';
 
 const translations = { en, ar };
@@ -69,12 +69,12 @@ export default function WhistleblowerLanding() {
       const validFiles = files.filter(file => {
         // Validate file size (max 10MB)
         if (!validateFileSize(file, 10)) {
-          alert(language === 'en' 
-            ? `File "${file.name}" exceeds 10MB limit` 
+          alert(language === 'en'
+            ? `File "${file.name}" exceeds 10MB limit`
             : `الملف "${file.name}" يتجاوز حد 10 ميجابايت`);
           return false;
         }
-        
+
         // Validate file type
         if (!validateFileType(file, ALLOWED_FILE_TYPES)) {
           alert(language === 'en'
@@ -82,7 +82,7 @@ export default function WhistleblowerLanding() {
             : `نوع الملف غير مسموح به: "${file.name}"`);
           return false;
         }
-        
+
         return true;
       });
 
@@ -90,7 +90,7 @@ export default function WhistleblowerLanding() {
         validFiles.map(async (file) => {
           // Strip metadata using utility function
           const strippedFile = await stripMetadata(file);
-          
+
           return {
             id: Math.random().toString(36).substr(2, 9),
             name: file.name,
@@ -104,8 +104,8 @@ export default function WhistleblowerLanding() {
       setAttachments([...attachments, ...processedFiles]);
     } catch (error) {
       console.error('Error processing files:', error);
-      alert(language === 'en' 
-        ? 'Error processing files. Please try again.' 
+      alert(language === 'en'
+        ? 'Error processing files. Please try again.'
         : 'خطأ في معالجة الملفات. يرجى المحاولة مرة أخرى.');
     } finally {
       setUploading(false);
@@ -118,10 +118,8 @@ export default function WhistleblowerLanding() {
   };
 
   const handleSubmit = async (e) => {
-    console.log(e);
-    
     e.preventDefault();
-    
+
     // Validate department selection
     if (!formData.department) {
       alert(language === 'en'
@@ -129,35 +127,46 @@ export default function WhistleblowerLanding() {
         : 'يرجى اختيار قسم');
       return;
     }
-    
+
     setSubmitting(true);
-    
+
     try {
-      // Prepare data for Power Automate using utility function
-      const emailData = await preparePowerAutomateData(
-        formData,
-        attachments,
-        language
-      );
-      
-      // Send via Power Automate using utility function
-      await sendViaPowerAutomate(emailData);
-      
+      // Prepare email data
+      const subject = getEmailSubject(formData.department, language);
+      const body = generateEmailBody(formData, language);
+
+      // Call your Netlify function
+      const response = await fetch('/.netlify/functions/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: departmentEmails[formData.department], // department email
+          subject,
+          body
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send email');
+      }
+
       // Success message
-      alert(language === 'en' 
-        ? 'Report submitted securely. You will receive a confirmation email with your case ID.' 
+      alert(language === 'en'
+        ? 'Report submitted securely. You will receive a confirmation email with your case ID.'
         : 'تم تقديم البلاغ بأمان. ستتلقى بريدًا إلكترونيًا للتأكيد مع رقم الحالة الخاص بك.');
-      
+
       // Reset form
-      setFormData({ 
-        name: '', 
-        email: '', 
-        organization: '', 
+      setFormData({
+        name: '',
+        email: '',
+        organization: '',
         department: '',
-        message: '' 
+        message: ''
       });
       setAttachments([]);
-      
+
     } catch (error) {
       console.error('Error submitting report:', error);
       alert(language === 'en'
@@ -167,6 +176,7 @@ export default function WhistleblowerLanding() {
       setSubmitting(false);
     }
   };
+
 
   return (
     <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
@@ -178,7 +188,7 @@ export default function WhistleblowerLanding() {
               <Shield className="w-8 h-8 text-blue-400" />
               <span className="text-xl font-bold text-white">AMIC Complains</span>
             </div>
-            
+
             {/* Desktop Navigation */}
             <div className={`hidden md:flex items-center space-x-8 ${isRTL ? 'space-x-reverse' : ''}`}>
               <button
@@ -309,7 +319,7 @@ export default function WhistleblowerLanding() {
           </div>
 
           <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur p-8 rounded-xl border border-blue-500/20">
-            
+
             {/* Department Dropdown - ADDED */}
             <div className="mb-6">
               <label className="block text-gray-300 mb-2 font-medium">
@@ -402,8 +412,8 @@ export default function WhistleblowerLanding() {
                 >
                   <Upload className="w-12 h-12 text-blue-400 mb-3" />
                   <span className="text-gray-300 mb-2">
-                    {language === 'en' 
-                      ? 'Click to upload or drag and drop' 
+                    {language === 'en'
+                      ? 'Click to upload or drag and drop'
                       : 'انقر للتحميل أو اسحب وأفلت'}
                   </span>
                   <span className="text-sm text-gray-500">
@@ -474,7 +484,7 @@ export default function WhistleblowerLanding() {
               disabled={uploading || submitting}
               className="w-full px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg shadow-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {submitting 
+              {submitting
                 ? (language === 'en' ? 'Submitting...' : 'جارٍ الإرسال...')
                 : t.form.submitBtn
               }
@@ -503,9 +513,8 @@ export default function WhistleblowerLanding() {
                 >
                   <span className={`text-lg font-semibold text-white ${isRTL ? 'pl-4' : 'pr-4'}`}>{faq.q}</span>
                   <ChevronDown
-                    className={`w-5 h-5 text-blue-400 flex-shrink-0 transition-transform ${
-                      openFaq === index ? 'transform rotate-180' : ''
-                    }`}
+                    className={`w-5 h-5 text-blue-400 flex-shrink-0 transition-transform ${openFaq === index ? 'transform rotate-180' : ''
+                      }`}
                   />
                 </button>
                 {openFaq === index && (
