@@ -7,7 +7,7 @@ import { stripMetadata, formatFileSize, validateFileSize, validateFileType } fro
 import {
   departments, sites, getEmailSubject, generateEmailBody, departmentEmails
 } from './utils/emailTemplate';
-import { convertFilesToBase64 } from './utils/base64';
+import { fileToBase64 } from './utils/base64';
 
 const translations = { en, ar };
 
@@ -136,7 +136,15 @@ export default function WhistleblowerLanding() {
 
       const files = attachments;
 
-      const formattedAttachments = await convertFilesToBase64(files);
+      const attachments = await Promise.all(
+        files.map(async file => ({
+          filename: file.name,
+          content: await fileToBase64(file),
+          contentType: file.type
+        }))
+      );
+
+
 
 
       // Call your Netlify function
@@ -147,7 +155,7 @@ export default function WhistleblowerLanding() {
           to: departmentEmails[formData.department], // department email
           subject,
           body,
-          attachments: formattedAttachments
+          attachments
         })
       });
 
