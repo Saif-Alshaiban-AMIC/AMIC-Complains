@@ -4,7 +4,7 @@ export async function handler(event) {
     try {
         const { to, subject, body } = JSON.parse(event.body);
 
-     
+        // for testing
         const testRecipient = 'salshaiban@alkhorayef.com';
 
      

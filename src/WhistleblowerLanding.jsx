@@ -5,9 +5,7 @@ import ar from './locale/ar.json';
 // Import utility functions
 import { stripMetadata, formatFileSize, validateFileSize, validateFileType } from './utils/metadataUtils';
 import {
-  departments,
-  preparePowerAutomateData,
-  sendViaPowerAutomate
+  departments,sites , getEmailSubject , generateEmailBody , departmentEmails
 } from './utils/emailTemplate';
 
 const translations = { en, ar };
@@ -327,7 +325,7 @@ export default function WhistleblowerLanding() {
               />
             </div>
 
-              <div className="mb-6">
+            <div className="mb-6">
               <label className="block text-gray-300 mb-2 font-medium">{t.form.email}</label>
               <input
                 type="email"
@@ -363,18 +361,27 @@ export default function WhistleblowerLanding() {
 
 
 
-          
 
+            {/* Site Dropdown - ADDED */}
             <div className="mb-6">
-              <label className="block text-gray-300 mb-2 font-medium">{t.form.site}</label>
-              <input
-                type="text"
+              <label className="block text-gray-300 mb-2 font-medium">
+                {language === 'en' ? 'Location (Optional)' : 'الموقع (اختياري)'}
+              </label>
+              <select
                 name="site"
                 value={formData.site}
                 onChange={handleInputChange}
-                placeholder={t.form.sitePlaceholder}
-                className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-              />
+                className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
+              >
+                <option value="">
+                  {language === 'en' ? '-- Select Location --' : '-- اختر الموقع --'}
+                </option>
+                {sites[language].map((site) => (
+                  <option key={site.id} value={site.id}>
+                    {site.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-6">
