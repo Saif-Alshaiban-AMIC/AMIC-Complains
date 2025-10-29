@@ -5,7 +5,7 @@ import ar from './locale/ar.json';
 // Import utility functions
 import { stripMetadata, formatFileSize, validateFileSize, validateFileType } from './utils/metadataUtils';
 import {
-  departments,sites , getEmailSubject , generateEmailBody , departmentEmails
+  departments, sites, getEmailSubject, generateEmailBody, departmentEmails
 } from './utils/emailTemplate';
 
 const translations = { en, ar };
@@ -29,7 +29,7 @@ export default function WhistleblowerLanding() {
     email: '',
     site: '',
     department: '', // Added department field
-    message: ''
+    message: '',
   });
   const [attachments, setAttachments] = useState([]);
   const [uploading, setUploading] = useState(false);
@@ -132,6 +132,8 @@ export default function WhistleblowerLanding() {
       // Prepare email data
       const subject = getEmailSubject(formData.department, language);
       const body = generateEmailBody(formData, language);
+      const files = attachments;
+      console.log(attachments);
 
       // Call your Netlify function
       const response = await fetch('/.netlify/functions/sendEmail', {
@@ -140,7 +142,8 @@ export default function WhistleblowerLanding() {
         body: JSON.stringify({
           to: departmentEmails[formData.department], // department email
           subject,
-          body
+          body,
+
         })
       });
 
@@ -367,7 +370,7 @@ export default function WhistleblowerLanding() {
                 {language === 'en' ? 'Location (Optional)' : 'الموقع (اختياري)'}
               </label>
               <select
-              required
+                required
                 name="site"
                 value={formData.site}
                 onChange={handleInputChange}
