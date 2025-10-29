@@ -136,7 +136,7 @@ export default function WhistleblowerLanding() {
 
       const files = attachments;
 
-      const attachments = await Promise.all(
+      const preparedAttachments  = await Promise.all(
         files.map(async file => ({
           filename: file.name,
           content: await fileToBase64(file),
@@ -155,7 +155,7 @@ export default function WhistleblowerLanding() {
           to: departmentEmails[formData.department], // department email
           subject,
           body,
-          attachments
+          attachments:preparedAttachments
         })
       });
 
