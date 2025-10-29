@@ -1,0 +1,73 @@
+{
+  "nav": {
+    "home": "Home",
+    "form": "Submit Report",
+    "faq": "FAQ"
+  },
+  "hero": {
+    "badge": "Secure • Anonymous • Protected",
+    "title1": "Speak Up.",
+    "title2": "Stay Protected.",
+    "subtitle": "A secure platform for reporting workplace misconduct with complete anonymity and legal protection. Your voice matters, and we ensure it's heard safely.",
+    "submitBtn": "Submit Anonymous Report",
+    "learnBtn": "Learn More"
+  },
+  "features": {
+    "encryption": {
+      "title": "End-to-End Encryption",
+      "desc": "Your reports are encrypted and secure from the moment you submit them."
+    },
+    "anonymity": {
+      "title": "Complete Anonymity",
+      "desc": "Report without revealing your identity. We never track or store personal data."
+    },
+    "legal": {
+      "title": "Legal Protection",
+      "desc": "Access to legal resources and protection against retaliation."
+    }
+  },
+  "form": {
+    "title": "Submit Your Report",
+    "subtitle": "All fields are optional. Provide only what you're comfortable sharing.",
+    "name": "Name (Optional)",
+    "namePlaceholder": "You can remain anonymous",
+    "email": "Email (Optional)",
+    "emailPlaceholder": "For case updates only",
+    "org": "Organization (Optional)",
+    "orgPlaceholder": "Where did this occur?",
+    "message": "Your Report *",
+    "messagePlaceholder": "Describe the incident in as much detail as you're comfortable sharing...",
+    "securityNote": "Your submission is encrypted and secure. We will never share your information without your explicit consent.",
+    "submitBtn": "Submit Secure Report"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about reporting safely",
+    "questions": [
+      {
+        "q": "Is my identity protected?",
+        "a": "Yes, absolutely. We use end-to-end encryption and do not store any identifying information unless you choose to provide it. You can submit reports completely anonymously."
+      },
+      {
+        "q": "What kind of information should I report?",
+        "a": "Any workplace misconduct including but not limiting to fraud, safety violations, discrimination, harassment, environmental violations, or unethical practices. If you're unsure, you can always reach out for guidance."
+      },
+      {
+        "q": "How long does the investigation process take?",
+        "a": "Investigation timelines vary depending on the complexity of the case. Typically, initial reviews happen within 48 hours, and full investigations can take 2-8 weeks. You'll receive updates throughout the process."
+      },
+      {
+        "q": "Can I be retaliated against for reporting?",
+        "a": "Retaliation is illegal in most jurisdictions. We provide legal resources and support to protect whistleblowers. Our platform documents all communications to help build evidence if retaliation occurs."
+      },
+      {
+        "q": "What happens after I submit a report?",
+        "a": "Your report is immediately encrypted and sent to our secure investigation team. You'll receive a unique case ID to track your report anonymously. Our team will review and may reach out for additional information if needed."
+      }
+    ],
+    "stillQuestions": "Still Have Questions?",
+    "supportText": "Our support team is here to help you understand the process and your rights.",
+    "contactBtn": "Contact Support"
+  },
+  "footer": "Protected by enterprise-grade encryption. Your safety is our priority."
+}
