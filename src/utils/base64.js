@@ -1,6 +1,6 @@
 export function fileToBase64(file) {
   return new Promise((resolve, reject) => {
-    if (!(file instanceof Blob)) {
+    if (!file || !file.name || !file.type) {
       reject(new Error('Invalid file type'));
       return;
     }

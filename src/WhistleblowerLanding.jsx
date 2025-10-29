@@ -136,14 +136,13 @@ export default function WhistleblowerLanding() {
 
       const validFiles = attachments.filter(file => file instanceof File);
 
-      const preparedAttachments = await Promise.all(
-        validFiles.map(async file => ({
-          filename: file.name,
-          content: await fileToBase64(file),
-          contentType: file.type
-        }))
-      );
-
+   const preparedAttachments = await Promise.all(
+  validFiles.map(async item => ({
+    filename: item.name,
+    content: await fileToBase64(item.file), // use item.file here
+    contentType: item.type
+  }))
+);
 
 
 
