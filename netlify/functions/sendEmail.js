@@ -1,8 +1,5 @@
 import nodemailer from 'nodemailer';
 
-
-console.log("SENDEREMAIL:", process.env.SENDEREMAIL);
-console.log("SENDERPASSWORD exists:", !!process.env.SENDERPASSWORD);
 export async function handler(event) {
     // Add CORS headers
     const headers = {

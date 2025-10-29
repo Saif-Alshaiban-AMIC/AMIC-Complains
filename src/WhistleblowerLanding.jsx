@@ -345,7 +345,6 @@ export default function WhistleblowerLanding() {
                 name="department"
                 value={formData.department}
                 onChange={handleInputChange}
-                required
                 className="w-full px-4 py-3 bg-slate-900/50 border border-blue-500/30 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
               >
                 <option value="">
@@ -368,6 +367,7 @@ export default function WhistleblowerLanding() {
                 {language === 'en' ? 'Location (Optional)' : 'الموقع (اختياري)'}
               </label>
               <select
+              required
                 name="site"
                 value={formData.site}
                 onChange={handleInputChange}

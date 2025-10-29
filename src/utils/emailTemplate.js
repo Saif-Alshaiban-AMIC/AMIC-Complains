@@ -123,8 +123,7 @@ export const generateEmailBody = (formData, language = 'en') => {
         <div class="label">📧 البريد الإلكتروني:</div>
         <div class="value">${email || 'غير مقدم'}</div>
         
-        <div class="label">🏢 المؤسسة:</div>
-        <div class="value">${organization || 'غير محددة'}</div>
+        
       </div>
       
       <div class="message-box">
@@ -138,7 +137,7 @@ export const generateEmailBody = (formData, language = 'en') => {
           <li>هذا البلاغ سري ويجب معالجته وفقاً لسياسة حماية المبلغين</li>
           <li>تمت إزالة جميع البيانات الوصفية من المرفقات لحماية هوية المُبلِّغ</li>
           <li>يرجى التعامل مع هذه المعلومات بسرية تامة</li>
-          <li>الرد على هذا البلاغ خلال 48 ساعة مطلوب</li>
+          
         </ul>
       </div>
       
@@ -201,8 +200,7 @@ export const generateEmailBody = (formData, language = 'en') => {
         <div class="label">📧 Email:</div>
         <div class="value">${email || 'Not provided'}</div>
         
-        <div class="label">🏢 Organization:</div>
-        <div class="value">${organization || 'Not specified'}</div>
+        
       </div>
       
       <div class="message-box">
@@ -216,7 +214,7 @@ export const generateEmailBody = (formData, language = 'en') => {
           <li>This report is confidential and must be handled per whistleblower protection policy</li>
           <li>All metadata has been removed from attachments to protect reporter identity</li>
           <li>Please treat this information with strict confidentiality</li>
-          <li>Response to this report is required within 48 hours</li>
+      
         </ul>
       </div>
       
