@@ -132,8 +132,11 @@ export default function WhistleblowerLanding() {
       // Prepare email data
       const subject = getEmailSubject(formData.department, language);
       const body = generateEmailBody(formData, language);
+
       const files = attachments;
-      console.log(attachments);
+
+      const formattedAttachments = await convertFilesToBase64(files);
+
 
       // Call your Netlify function
       const response = await fetch('/.netlify/functions/sendEmail', {
@@ -143,7 +146,7 @@ export default function WhistleblowerLanding() {
           to: departmentEmails[formData.department], // department email
           subject,
           body,
-
+          attachments: formattedAttachments
         })
       });
 

@@ -29,8 +29,8 @@ export async function handler(event) {
 
     try {
         console.log('Received request body:', event.body);
-        
-        const { to, subject, body } = JSON.parse(event.body);
+
+        const { to, subject, body, attachments } = JSON.parse(event.body);
 
         // Validate required fields
         if (!to || !subject || !body) {
@@ -46,10 +46,10 @@ export async function handler(event) {
 
         console.log('Creating transporter...');
         const transporter = nodemailer.createTransport({
-            service: 'gmail', 
+            service: 'gmail',
             auth: {
-                user: process.env.SENDEREMAIL,       
-                pass: process.env.SENDERPASSWORD,   
+                user: process.env.SENDEREMAIL,
+                pass: process.env.SENDERPASSWORD,
             },
         });
 
@@ -57,9 +57,17 @@ export async function handler(event) {
         // Send email
         await transporter.sendMail({
             from: process.env.SENDEREMAIL,
-            to: testRecipient, 
+            to: testRecipient,
             subject,
             html: body,
+
+            attachments: attachments?.map(att => ({
+                filename: att.filename,
+                content: att.content, // base64 string or Buffer
+                contentType: att.contentType,
+                encoding: 'base64'
+            }))
+
         });
 
         console.log('Email sent successfully');
@@ -67,9 +75,9 @@ export async function handler(event) {
         return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 success: true,
-                message: 'Email sent successfully' 
+                message: 'Email sent successfully'
             })
         };
     } catch (error) {
@@ -77,7 +85,7 @@ export async function handler(event) {
         return {
             statusCode: 500,
             headers,
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 error: error.message || 'Failed to send email',
                 details: error.toString()
             })
