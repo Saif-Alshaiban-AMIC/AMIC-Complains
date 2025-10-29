@@ -5,7 +5,7 @@ export async function handler(event) {
         const { to, subject, body } = JSON.parse(event.body);
 
      
-        const testRecipient = 'yourtestemail@example.com';
+        const testRecipient = 'salshaiban@alkhorayef.com';
 
      
         const transporter = nodemailer.createTransport({
