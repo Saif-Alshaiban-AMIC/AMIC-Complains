@@ -7,6 +7,7 @@ import { stripMetadata, formatFileSize, validateFileSize, validateFileType } fro
 import {
   departments, sites, getEmailSubject, generateEmailBody, departmentEmails
 } from './utils/emailTemplate';
+import { convertFilesToBase64 } from './utils/base64';
 
 const translations = { en, ar };
 

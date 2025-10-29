@@ -1,4 +1,4 @@
-const convertFilesToBase64 = async (files) => {
+export const convertFilesToBase64 = async (files) => {
   const readFileAsBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
