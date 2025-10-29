@@ -134,10 +134,10 @@ export default function WhistleblowerLanding() {
       const subject = getEmailSubject(formData.department, language);
       const body = generateEmailBody(formData, language);
 
-      const files = attachments;
+      const validFiles = attachments.filter(file => file instanceof File);
 
-      const preparedAttachments  = await Promise.all(
-        files.map(async file => ({
+      const preparedAttachments = await Promise.all(
+        validFiles.map(async file => ({
           filename: file.name,
           content: await fileToBase64(file),
           contentType: file.type
@@ -155,7 +155,7 @@ export default function WhistleblowerLanding() {
           to: departmentEmails[formData.department], // department email
           subject,
           body,
-          attachments:preparedAttachments
+          attachments: preparedAttachments
         })
       });
 
