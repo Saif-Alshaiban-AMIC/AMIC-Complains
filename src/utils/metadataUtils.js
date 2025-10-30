@@ -160,11 +160,75 @@ export const validateFileSize = (file, maxSizeMB = 10) => {
  * @param {string[]} allowedTypes - Array of allowed MIME types
  * @returns {boolean} - Whether file type is allowed
  */
-export const validateFileType = (file, allowedTypes) => {
-  return allowedTypes.some(type => {
-    if (type.endsWith('/*')) {
-      return file.type.startsWith(type.replace('/*', ''));
-    }
-    return file.type === type;
-  });
+/**
+ * Validate file type - Comprehensive version
+ * Supports: Images, PDFs, Videos, Audio, Word, Excel, PowerPoint
+ * @param {File} file - The file to validate
+ * @returns {boolean} - Whether file type is allowed
+ */
+export const validateFileType = (file) => {
+  const allowedTypes = [
+    // Images
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'image/bmp',
+    'image/svg+xml',
+    
+    // PDFs
+    'application/pdf',
+    
+    // Videos
+    'video/mp4',
+    'video/mpeg',
+    'video/quicktime',
+    'video/x-msvideo',
+    'video/x-ms-wmv',
+    'video/webm',
+    'video/ogg',
+    
+    // Audio/Voice
+    'audio/mpeg',
+    'audio/mp3',
+    'audio/wav',
+    'audio/ogg',
+    'audio/webm',
+    'audio/aac',
+    'audio/m4a',
+    'audio/x-m4a',
+    
+    // Word Documents
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    
+    // Excel
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    
+    // PowerPoint (bonus)
+    'application/vnd.ms-powerpoint',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+    
+    // Text
+    'text/plain',
+    'text/csv'
+  ];
+  
+  // Quick check for common categories
+  if (file.type.startsWith('image/')) {
+    return true;
+  }
+  
+  if (file.type.startsWith('video/')) {
+    return true;
+  }
+  
+  if (file.type.startsWith('audio/')) {
+    return true;
+  }
+  
+  // Check if file type is in allowed list
+  return allowedTypes.includes(file.type);
 };
