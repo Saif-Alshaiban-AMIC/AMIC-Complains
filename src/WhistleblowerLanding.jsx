@@ -75,7 +75,7 @@ export default function WhistleblowerLanding() {
         }
 
         // Validate file type
-        if (!validateFileType(file, ALLOWED_FILE_TYPES)) {
+        if (!validateFileType(file)) {
           alert(language === 'en'
             ? `File type not allowed: "${file.name}"`
             : `نوع الملف غير مسموح به: "${file.name}"`);
